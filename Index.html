@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>BOOOOUUUUUUUUU! 🥹🥹🥹</title>
+    <title>bouuuuuuu!😭🤧🥹</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta charset="UTF-8">
 
     <style>
         /* ===== Base Styles ===== */
@@ -119,13 +120,12 @@
 </head>
 <body>
 
-<h1 id="question">Will You Marry Me? 💖</h1>
+<h1 id="question">Will You Be My Penguin? 💖</h1>
 
 <button id="yesBtn">Yes 😊</button>
 <button id="noBtn">No 😢</button>
 
 <div id="message"></div>
-<button id="screenshotBtn">📸 Screenshot</button>
 
 <canvas id="effects"></canvas>
 
@@ -137,10 +137,10 @@
 
 <script>
     // ==== Name Prompt ====
-    const name = prompt("Enter your name 💌 (optional):");
+    const name = prompt("Enter your name please 💌:");
     if (name && name.trim() !== "") {
         document.getElementById("question").innerHTML =
-            name + ", Will You Marry Me? 💖";
+            name + ", Will You Be My Penguin? 💖";
     }
 
     const noBtn = document.getElementById("noBtn");
@@ -154,7 +154,7 @@
     let particles = [];
     let loveStarted = false;
 
-    // Move NO button on hover/touch
+    // Move NO button
     function moveNoButton() {
         if (loveStarted) return;
         const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
@@ -243,7 +243,7 @@
     yesBtn.addEventListener("click", () => {
         loveStarted = true;
 
-        message.innerHTML = "YAYYY!!! 🎉💖<br>Thank you so much!! 😍❤️";
+        message.innerHTML = "YAYYY!!! 🎉💖<br>Thank you so much!! 😍❤️<br>btw, 'Penguins are creatures that remain with their chosen life partners for the rest of their lives.🙂'";
 
         // Show message before adding animation class
         message.style.display = "block";
